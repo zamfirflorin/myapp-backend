@@ -8,6 +8,9 @@ public class Contacts {
 	private int id;
 	private String name;
 	
+	public int add( int i , int j ) {
+			return i + j; 
+	}
 
 	
 	public Contacts(int id, String name) {
