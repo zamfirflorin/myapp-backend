@@ -7,19 +7,13 @@ import org.junit.Test;
 
 import com.florin.myapp.contacts.Contacts;
 
-class TestContacts {
+public class TestContacts {
 
-	@Test
-	void test() {
-		fail("Not yet implemented");
-	}
-	
-	
 	Contacts c = new Contacts(1, "asdasd"); 
-	
+	 
 	@Test
 	public void testAdd() {
-		assertEquals(5, c.add(2, 3));
+		assertEquals(4, c.add(2, 3));
 	}
 
 }
