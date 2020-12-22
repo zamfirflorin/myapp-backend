@@ -3,7 +3,7 @@ package com.florin.myapp.contacts;
 import javax.persistence.*;
 
 @Entity
-@Table(name="Contacts")
+@Table(name="contacts")
 public class Contacts {
 	
 	@Id
@@ -24,7 +24,7 @@ public class Contacts {
 	public Contacts(int id, String firstName, String surName) {
 		this.id = id;
 		this.firstName = firstName;
-		this.surName = surName; 
+		this.surName = surName;
 	}
 	public int getId() {
 		return id;
