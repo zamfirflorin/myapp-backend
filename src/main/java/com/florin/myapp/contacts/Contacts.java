@@ -1,8 +1,10 @@
 package com.florin.myapp.contacts;
 
-import org.springframework.stereotype.Component;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-
+@Entity
+@Table(name="Contacts")
 public class Contacts {
 	
 	private int id;
