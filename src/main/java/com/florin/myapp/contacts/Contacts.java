@@ -21,8 +21,12 @@ public class Contacts {
 	}
 
 	
-	public Contacts(int id, String firstName, String surName) {
-		this.id = id;
+	public Contacts() {
+		
+	}
+	
+	public Contacts(long l, String firstName, String surName) {
+		this.id = l;
 		this.firstName = firstName;
 		this.surName = surName;
 	}

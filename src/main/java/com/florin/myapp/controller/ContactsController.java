@@ -34,26 +34,27 @@ public class ContactsController {
 	
 	//CREATE / INSERT / POST
 	
-	@PostMapping("/post/{contacts}")
-	public ResponseEntity<Void> createContact(@PathVariable String contacts, @RequestBody Contacts contact){
+	@GetMapping(path="/helloworld")
+	public String helloWorld() {
+		return "Helloworld";
+	}
+	
+	@PostMapping(path="/post/{contacts}")
+	public Contacts createContact(@RequestBody Contacts contact){
 		
-		Contacts createdContact = contactsRepository.save(contact);
+		return contactsRepository.save(contact);
 		
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(createdContact.getId()).toUri();
-		
-		return ResponseEntity.created(uri).build();
 	}
 	
 	//RETRIEVE/READ / SELECT /GET
-	@GetMapping("/contacts")
+	@GetMapping(path="/contacts")
 	public List<Contacts> getAllContacts(){
 		List<Contacts> contacts = contactsRepository.findAll();
 		return contacts;
 	}
 	//UPDATE / UPDATE/ REPLACE PUT
 	
-	@PutMapping("/contacts/{id}")
+	@PutMapping(path="/contacts/{id}")
 	public ResponseEntity<Contacts> updateContact(@PathVariable int id, @RequestBody Contacts contact){
 		
 		
@@ -64,7 +65,7 @@ public class ContactsController {
 	}
 	
 	//DELETE / DELETE / DElete
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping(path="/delete/{id}")
 	public ResponseEntity<Void> deleteContact(@PathVariable long id) {
 		
 		contactsRepository.deleteById(id);
