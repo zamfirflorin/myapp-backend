@@ -1,6 +1,5 @@
 package com.florin.myapp.controller;
 
-import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.florin.myapp.contacts.Contacts;
 import com.florin.myapp.repository.ContactsRepository;
+import com.florin.myapp.service.ContactsService;
 
 
 
@@ -32,6 +31,9 @@ public class ContactsController {
 	@Autowired
 	ContactsRepository contactsRepository;
 	
+	
+	@Autowired
+	ContactsService contactsService; 
 	//CREATE / INSERT / POST
 	
 	@GetMapping(path="/helloworld")
@@ -55,16 +57,18 @@ public class ContactsController {
 	//UPDATE / UPDATE/ REPLACE PUT
 	
 	@PutMapping(path="/contacts/{id}")
-	public ResponseEntity<Contacts> updateContact(@PathVariable int id, @RequestBody Contacts contact){
+	public ResponseEntity<Contacts> updateContact(@PathVariable int id, @RequestBody Contacts updateContact){
 		
 		
-		Contacts updatedContact = contactsRepository.save(contact);
+		Contacts contact = contactsService.findById(id);
+		contact.setFirstName(updateContact.getFirstName());
+		contact.setSurName(updateContact.getSurName());
 		
 		return new ResponseEntity<Contacts>(contact, HttpStatus.OK);
 		
 	}
 	
-	//DELETE / DELETE / DElete
+	//DELETE / DELETE / DEleteW
 	@DeleteMapping(path="/delete/{id}")
 	public ResponseEntity<Void> deleteContact(@PathVariable long id) {
 		
