@@ -13,23 +13,14 @@ public class Contacts {
 	@Column(name = "firstname")
 	private String firstName;
 	
-	@Column(name = "surName")
-	private String surName;
+	@Column(name = "surname")
+	private String lastName;
 	
 	public int add( int i , int j ) {
 			return i + j; 
 	}
 
 	
-	public Contacts() {
-		
-	}
-	
-	public Contacts(long l, String firstName, String surName) {
-		this.id = l;
-		this.firstName = firstName;
-		this.surName = surName;
-	}
 	public long getId() {
 		return id;
 	}
@@ -43,12 +34,12 @@ public class Contacts {
 		this.firstName = firstName;
 	}
 
-	public String getSurName() {
-		return surName;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setSurName(String surName) {
-		this.surName = surName;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	} 
 	
 }

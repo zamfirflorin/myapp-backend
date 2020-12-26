@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.florin.myapp.MyappApplication;
 import com.florin.myapp.contacts.Contacts;
 import com.florin.myapp.repository.ContactsRepository;
-import com.florin.myapp.service.ContactsService;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Florin
@@ -28,8 +29,10 @@ import com.florin.myapp.service.ContactsService;
 @RestController
 public class ContactsController {
 	
+	private static final Logger log = LoggerFactory.getLogger(MyappApplication.class);
+	
 	@Autowired
-	ContactsService contactsService; 
+	ContactsRepository contactsRepository; 
 	//CREATE / INSERT / POST
 	
 	/*
@@ -37,28 +40,31 @@ public class ContactsController {
 	 * "Helloworld againada"; }
 	 */
 	
-	@PostMapping(path="/post/{contacts}")
-	public Contacts createContact(@RequestBody Contacts contact){
+	@PostMapping(path="/add")
+	public Contacts createContact(@RequestBody String firstName, @RequestBody String lastName){
 		
-		return contactsService.save(contact);
+		Contacts contact = new Contacts();
+		contact.setFirstName(firstName);
+		contact.setLastName(lastName);
+		return contactsRepository.save(contact);
 		
 	}
 	
 	//RETRIEVE/READ / SELECT /GET
 	@GetMapping(path="/contacts")
 	public List<Contacts> getAllContacts(){
-		List<Contacts> contacts = contactsService.findAll();
-		return contacts;
+		
+		return contactsRepository.findAll();
 	}
 	//UPDATE / UPDATE/ REPLACE PUT
 	
 	@PutMapping(path="/contacts/{id}")
-	public ResponseEntity<Contacts> updateContact(@PathVariable int id, @RequestBody Contacts updateContact){
+	public ResponseEntity<Contacts> updateContact(@PathVariable long id, @RequestBody String firstName, @RequestBody String lastName){
 		
 		
-		Contacts contact = contactsService.findById(id);
-		contact.setFirstName(updateContact.getFirstName());
-		contact.setSurName(updateContact.getSurName());
+		Contacts contact = contactsRepository.findById(id);
+		contact.setFirstName(firstName);
+		contact.setLastName(lastName);
 		
 		return new ResponseEntity<Contacts>(contact, HttpStatus.OK);
 		
@@ -68,7 +74,7 @@ public class ContactsController {
 	@DeleteMapping(path="/delete/{id}")
 	public ResponseEntity<Void> deleteContact(@PathVariable long id) {
 		
-		contactsService.deleteById(id);
+		contactsRepository.deleteById(id);
 		
 		return ResponseEntity.notFound().build();
 	}
