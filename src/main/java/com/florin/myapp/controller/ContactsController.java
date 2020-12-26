@@ -32,10 +32,10 @@ public class ContactsController {
 	ContactsService contactsService; 
 	//CREATE / INSERT / POST
 	
-	@GetMapping(path="/helloworld")
-	public String helloWorld() {
-		return "Helloworld againada";
-	}
+	/*
+	 * @GetMapping(path="/helloworld") public String helloWorld() { return
+	 * "Helloworld againada"; }
+	 */
 	
 	@PostMapping(path="/post/{contacts}")
 	public Contacts createContact(@RequestBody Contacts contact){
