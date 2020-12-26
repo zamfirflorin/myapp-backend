@@ -27,10 +27,6 @@ import com.florin.myapp.service.ContactsService;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class ContactsController {
-
-	@Autowired
-	ContactsRepository contactsRepository;
-	
 	
 	@Autowired
 	ContactsService contactsService; 
@@ -38,20 +34,20 @@ public class ContactsController {
 	
 	@GetMapping(path="/helloworld")
 	public String helloWorld() {
-		return "Helloworld";
+		return "Helloworld againada";
 	}
 	
 	@PostMapping(path="/post/{contacts}")
 	public Contacts createContact(@RequestBody Contacts contact){
 		
-		return contactsRepository.save(contact);
+		return contactsService.save(contact);
 		
 	}
 	
 	//RETRIEVE/READ / SELECT /GET
 	@GetMapping(path="/contacts")
 	public List<Contacts> getAllContacts(){
-		List<Contacts> contacts = contactsRepository.findAll();
+		List<Contacts> contacts = contactsService.findAll();
 		return contacts;
 	}
 	//UPDATE / UPDATE/ REPLACE PUT
@@ -72,7 +68,7 @@ public class ContactsController {
 	@DeleteMapping(path="/delete/{id}")
 	public ResponseEntity<Void> deleteContact(@PathVariable long id) {
 		
-		contactsRepository.deleteById(id);
+		contactsService.deleteById(id);
 		
 		return ResponseEntity.notFound().build();
 	}
