@@ -2,6 +2,8 @@ package com.florin.myapp.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.florin.myapp.MyappApplication;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import com.florin.myapp.contacts.Contacts;
 import com.florin.myapp.repository.ContactsRepository;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Florin
@@ -29,7 +27,7 @@ import org.slf4j.LoggerFactory;
 @RestController
 public class ContactsController {
 	
-	private static final Logger log = LoggerFactory.getLogger(MyappApplication.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	ContactsRepository contactsRepository; 
@@ -39,6 +37,14 @@ public class ContactsController {
 	 * @GetMapping(path="/helloworld") public String helloWorld() { return
 	 * "Helloworld againada"; }
 	 */
+	
+	
+	//RETRIEVE/READ / SELECT /GET
+	@GetMapping(path="/contacts")
+	public ResponseEntity<List<Contacts>> getAllContacts(){
+		
+		return ResponseEntity.ok(contactsRepository.findAll());
+	}
 	
 	@PostMapping(path="/add")
 	public Contacts createContact(@RequestBody String firstName, @RequestBody String lastName){
@@ -50,15 +56,10 @@ public class ContactsController {
 		
 	}
 	
-	//RETRIEVE/READ / SELECT /GET
-	@GetMapping(path="/contacts")
-	public List<Contacts> getAllContacts(){
-		
-		return contactsRepository.findAll();
-	}
+
 	//UPDATE / UPDATE/ REPLACE PUT
 	
-	@PutMapping(path="/contacts/{id}")
+	@PutMapping(path="/update/{id}")
 	public ResponseEntity<Contacts> updateContact(@PathVariable long id, @RequestBody String firstName, @RequestBody String lastName){
 		
 		
@@ -74,9 +75,14 @@ public class ContactsController {
 	@DeleteMapping(path="/delete/{id}")
 	public ResponseEntity<Void> deleteContact(@PathVariable long id) {
 		
+		try {
 		contactsRepository.deleteById(id);
-		
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.ok().build();
+		} catch(ResourceNotFoundException ex) {
+			 logger.error(ex.getMessage());
+		    return ResponseEntity.notFound().build();
+		}
+
 	}
 	
 }

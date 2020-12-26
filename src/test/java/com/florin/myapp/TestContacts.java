@@ -9,11 +9,11 @@ import com.florin.myapp.contacts.Contacts;
 
 public class TestContacts {
 
-	Contacts c = new Contacts(1, "asdasd", "prenume"); 
+	
 	 
 	@Test
 	public void testAdd() {
-		assertEquals(4, c.add(2, 3));
+		
 	}
 
 }
