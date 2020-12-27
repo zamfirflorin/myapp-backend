@@ -28,19 +28,19 @@ import java.net.URISyntaxException;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class ContactsController {
-	
+
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+
 	@Autowired
 	ContactsRepository contactsRepository; 
-	
+
 	//RETRIEVE/READ / SELECT /GET
 	@GetMapping(path="/contacts")
 	public ResponseEntity<List<Contacts>> getAllContacts(){
 
 		return ResponseEntity.ok(contactsRepository.findAll());
 	}
-	
+
 	@GetMapping(path="/contacts/{contactId}")
 	public ResponseEntity<Contacts> getContactById(@PathVariable long contactId){
 
@@ -52,7 +52,7 @@ public class ContactsController {
 
 		}
 	}
-	
+
 	//CREATE / INSERT / POST	
 	@PostMapping(path="/contacts/add")
 	public ResponseEntity<Contacts> createContact(@RequestBody Contacts contact){
@@ -62,28 +62,36 @@ public class ContactsController {
 		try {
 			return ResponseEntity.created(new URI("/contacts/add" + newContact.getId())).body(contact);
 		} catch (URISyntaxException ex) {
-	        // log exception first, then return Conflict (409)
-	        logger.error(ex.getMessage());
-	        return ResponseEntity.status(HttpStatus.CONFLICT).build();
-	    } 
+			// log exception first, then return Conflict (409)
+			logger.error(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		} 
 
 	}
-	
+
 
 	//UPDATE / UPDATE/ REPLACE PUT
-	
-	@PutMapping(path="/contacts/update/{id}")
-	public ResponseEntity<Contacts> updateContact(@PathVariable long id, @RequestBody String firstName, @RequestBody String lastName){
 
-		Contacts contact = contactsRepository.findById(id);
-		contact.setId(id);
-		contact.setFirstName(firstName);
-		contact.setLastName(lastName);
-		return  ResponseEntity.ok().build();
+	@PutMapping(path="/contacts/update/{id}")
+	public ResponseEntity<Contacts> updateContact(@PathVariable long id, @RequestBody Contacts contact){
+
+		try {
+
+			contact.setId(id);
+			Contacts updateContact = contactsRepository.findById(id);
+			updateContact.setId(contact.getId());
+			updateContact.setFirstName(contact.getFirstName());
+			updateContact.setLastName(contact.getLastName());
+			contactsRepository.save(updateContact);
+			return  ResponseEntity.ok().build();
+		} catch (ResourceNotFoundException e) {
+			logger.error(e.getMessage());
+			return ResponseEntity.notFound().build();
+		}
 
 	}
-	
-	//DELETE / DELETE / DEleteW
+
+	//DELETE / DELETE / DElete
 	@DeleteMapping(path="/delete/{id}")
 	public ResponseEntity<Void> deleteContact(@PathVariable long id) {
 
@@ -96,5 +104,5 @@ public class ContactsController {
 		}
 
 	}
-	
+
 }

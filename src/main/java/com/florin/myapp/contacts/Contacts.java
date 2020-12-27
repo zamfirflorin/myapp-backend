@@ -13,7 +13,6 @@ public class Contacts {
 	@Column(name = "firstname")
 	private String firstName;
 	
-	@Column(name = "surname")
 	private String lastName;
 	
 	public int add( int i , int j ) {
